@@ -1,0 +1,91 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.tanveer.handsonapplication'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.tanveer.handsonapplication"
+        minSdk 16
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", '"https://quotable.io/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField "String", "BASE_URL", '"https://quotable.io/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+final coreDependencies = [
+        androidxCoreKtx   : "androidx.core:core-ktx:${androidx_core_ktx_version}",
+        androidxAppcompat : "androidx.appcompat:appcompat:${androidx_appcompact_version}",
+        androidxMaterial  : "com.google.android.material:material:${androidx_material_version}",
+        androidxConstraint: "androidx.constraintlayout:constraintlayout:${androidx_constraint_layout_version}",
+        kotlinCoroutine   : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutine_version}"
+]
+
+//region JUnit Unit Testing
+final testJUnitDependencies = [
+        jUnit                       : "junit:junit:${jUnit_version}",
+        mockKUnitTest               : "io.mockk:mockk:${mockK_version}",
+        mockKAndroidInstrumentedTest: "io.mockk:mockk-android:${mockK_version}",
+        //  robo                        : "org.robolectric:robolectric:4.1"
+
+        coroutineTesting            : 'org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.4.0'
+]
+//endregion
+
+//region Integration/Android Testing
+final androidTestDependencies = [
+        testJunit   : 'androidx.test.ext:junit:1.1.5',
+        testEspresso: 'androidx.test.espresso:espresso-core:3.5.1'
+]
+//endregion
+
+//region Network dependencies
+final networkDependencies = [
+        retrofit             : "com.squareup.retrofit2:retrofit:$retrofit_version",
+        retrofitGsonConverter: "com.squareup.retrofit2:converter-gson:$retrofit_version",
+        okhttp               : "com.squareup.okhttp3:okhttp:$retrofit_version",
+        okHttp3Logging       : "com.squareup.okhttp3:logging-interceptor:$ok_http_version",
+]
+//endregion
+
+dependencies {
+    implementation coreDependencies.values()
+    testImplementation testJUnitDependencies.values()
+    androidTestImplementation androidTestDependencies.values()
+
+    implementation networkDependencies.values()
+
+}
